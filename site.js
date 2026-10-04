@@ -59,20 +59,47 @@
 
   // ---------- Downloads ----------
 
-  // Point every download button straight at the newest ZIP. If GitHub
+  // Visitors on Windows see the Windows download first. Everything else keeps
+  // the Mac first, since that is the primary platform.
+  const platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "";
+  const onWindows = /win/i.test(platform) || /Windows NT/.test(navigator.userAgent);
+  if (onWindows) {
+    const navMac = document.querySelector("[data-nav-mac]");
+    const navWindows = document.querySelector("[data-nav-windows]");
+    if (navMac && navWindows) {
+      navMac.hidden = true;
+      navWindows.hidden = false;
+    }
+    document.querySelectorAll("[data-download-windows]:not([data-nav-windows])").forEach((windows) => {
+      const mac = windows.parentElement && windows.parentElement.querySelector("[data-download]");
+      if (!mac) return;
+      windows.classList.add("primary");
+      mac.classList.remove("primary");
+      windows.parentElement.insertBefore(windows, mac);
+    });
+  }
+
+  // Point every download button straight at the newest files. If GitHub
   // can't be reached, the buttons still open the latest release page.
   fetch("https://api.github.com/repos/capi-git/aven/releases/latest")
     .then((response) => (response.ok ? response.json() : Promise.reject()))
     .then((release) => {
-      const zip = release.assets.find((asset) => /macos-arm64\.zip$/.test(asset.name));
-      if (zip) {
+      const find = (pattern) => release.assets.find((asset) => pattern.test(asset.name));
+      const mac = find(/macos-arm64\.zip$/);
+      const windows = find(/x64[-_]setup\.exe$/);
+      if (mac) {
         document.querySelectorAll("[data-download]").forEach((link) => {
-          link.href = zip.browser_download_url;
+          link.href = mac.browser_download_url;
+        });
+      }
+      if (windows) {
+        document.querySelectorAll("[data-download-windows]").forEach((link) => {
+          link.href = windows.browser_download_url;
         });
       }
       const version = release.tag_name.replace(/^v/, "");
       document.querySelectorAll("[data-release-meta]").forEach((meta) => {
-        meta.textContent = `Version ${version} · Apple Silicon · macOS 13 or later · Free and open source`;
+        meta.textContent = `Version ${version} · Apple Silicon Macs on macOS 13+ · Windows 10 and 11 · Free and open source`;
       });
     })
     .catch(() => {});

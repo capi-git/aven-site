@@ -13,15 +13,15 @@
     <meta property="og:image" content="/assets/aven.png" />
     <meta name="theme-color" content="#000000" />
     <link rel="icon" type="image/png" href="/assets/aven.png" />
-    <link rel="stylesheet" href="/style.css?v=17" />
-    <link rel="stylesheet" href="/demo.css?v=17" />
+    <link rel="stylesheet" href="/style.css?v=18" />
+    <link rel="stylesheet" href="/demo.css?v=18" />
   </head>
   <body>
     <div class="backdrop" aria-hidden="true"></div>
     <div class="grain" aria-hidden="true"></div>
 
     <div class="ticker" aria-label="Aven at a glance">
-      <div class="ticker-track"><div class="ticker-group"><span><b>8</b> Agent adapters</span><span><b>1</b> Window</span><span><b>$0</b> To use Aven</span><span><b>MIT</b> Open source</span><span><b>M-series</b> Apple Silicon</span><span><b>macOS 13+</b> Supported</span><span><b>Auto</b> Signed updates</span><span><b>0</b> Tokens sold</span></div><div class="ticker-group" aria-hidden="true"><span><b>8</b> Agent adapters</span><span><b>1</b> Window</span><span><b>$0</b> To use Aven</span><span><b>MIT</b> Open source</span><span><b>M-series</b> Apple Silicon</span><span><b>macOS 13+</b> Supported</span><span><b>Auto</b> Signed updates</span><span><b>0</b> Tokens sold</span></div></div>
+      <div class="ticker-track"><div class="ticker-group"><span><b>8</b> Agent adapters</span><span><b>1</b> Window</span><span><b>$0</b> To use Aven</span><span><b>MIT</b> Open source</span><span><b>M-series</b> Apple Silicon</span><span><b>macOS 13+</b> Supported</span><span><b>Windows</b> 10 and 11</span><span><b>Auto</b> Signed updates</span><span><b>0</b> Tokens sold</span></div><div class="ticker-group" aria-hidden="true"><span><b>8</b> Agent adapters</span><span><b>1</b> Window</span><span><b>$0</b> To use Aven</span><span><b>MIT</b> Open source</span><span><b>M-series</b> Apple Silicon</span><span><b>macOS 13+</b> Supported</span><span><b>Windows</b> 10 and 11</span><span><b>Auto</b> Signed updates</span><span><b>0</b> Tokens sold</span></div></div>
     </div>
 
     <header class="site-nav-bar" id="site-nav">
@@ -36,9 +36,13 @@
         <a href="#faq">FAQ</a>
         <a href="https://github.com/capi-git/aven">GitHub</a>
       </nav>
-      <a class="button primary small" data-download href="https://github.com/capi-git/aven/releases/latest">
+      <a class="button primary small" data-download data-nav-mac href="https://github.com/capi-git/aven/releases/latest">
         <svg class="apple" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.62c-.02-2.23 1.82-3.3 1.9-3.35-1.04-1.52-2.65-1.72-3.22-1.75-1.37-.14-2.68.81-3.37.81-.7 0-1.77-.79-2.9-.77-1.49.02-2.87.87-3.64 2.2-1.55 2.69-.4 6.67 1.11 8.85.74 1.07 1.62 2.27 2.77 2.22 1.11-.04 1.53-.72 2.88-.72 1.34 0 1.72.72 2.9.7 1.2-.02 1.96-1.09 2.69-2.16.85-1.24 1.2-2.44 1.22-2.5-.03-.01-2.33-.9-2.34-3.53ZM14.16 6.08c.61-.74 1.02-1.77.91-2.8-.88.04-1.94.59-2.57 1.33-.56.65-1.06 1.7-.93 2.7.98.08 1.98-.5 2.59-1.23Z" /></svg>
         <span>Download for Mac</span>
+      </a>
+      <a class="button primary small" data-download-windows data-nav-windows hidden href="https://github.com/capi-git/aven/releases/latest">
+        <svg class="windows" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.1 10.4 4v7.1H3V5.1Zm0 13.8 7.4 1.1v-7H3v5.9Zm8.3 1.2L21 21.5v-8.4h-9.7v7ZM11.3 3.9v7.2H21V2.5l-9.7 1.4Z" /></svg>
+        <span>Download for Windows</span>
       </a>
     </header>
 
@@ -53,12 +57,12 @@
           <svg class="apple" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.62c-.02-2.23 1.82-3.3 1.9-3.35-1.04-1.52-2.65-1.72-3.22-1.75-1.37-.14-2.68.81-3.37.81-.7 0-1.77-.79-2.9-.77-1.49.02-2.87.87-3.64 2.2-1.55 2.69-.4 6.67 1.11 8.85.74 1.07 1.62 2.27 2.77 2.22 1.11-.04 1.53-.72 2.88-.72 1.34 0 1.72.72 2.9.7 1.2-.02 1.96-1.09 2.69-2.16.85-1.24 1.2-2.44 1.22-2.5-.03-.01-2.33-.9-2.34-3.53ZM14.16 6.08c.61-.74 1.02-1.77.91-2.8-.88.04-1.94.59-2.57 1.33-.56.65-1.06 1.7-.93 2.7.98.08 1.98-.5 2.59-1.23Z" /></svg>
           <span>Download for Mac</span>
         </a>
-        <span class="button disabled" aria-disabled="true">
+        <a class="button" data-download-windows href="https://github.com/capi-git/aven/releases/latest">
           <svg class="windows" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.1 10.4 4v7.1H3V5.1Zm0 13.8 7.4 1.1v-7H3v5.9Zm8.3 1.2L21 21.5v-8.4h-9.7v7ZM11.3 3.9v7.2H21V2.5l-9.7 1.4Z" /></svg>
-          <span>Windows <em>coming soon</em></span>
-        </span>
+          <span>Download for Windows</span>
+        </a>
       </div>
-      <p class="meta" data-release-meta>Apple Silicon · macOS 13 or later · Free and open source</p>
+      <p class="meta" data-release-meta>Apple Silicon Macs on macOS 13+ · Windows 10 and 11 · Free and open source</p>
     </section>
 
     <!-- The live app: glass over the wallpaper, like the app's default theme. -->
@@ -100,10 +104,10 @@
           <svg class="apple" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.62c-.02-2.23 1.82-3.3 1.9-3.35-1.04-1.52-2.65-1.72-3.22-1.75-1.37-.14-2.68.81-3.37.81-.7 0-1.77-.79-2.9-.77-1.49.02-2.87.87-3.64 2.2-1.55 2.69-.4 6.67 1.11 8.85.74 1.07 1.62 2.27 2.77 2.22 1.11-.04 1.53-.72 2.88-.72 1.34 0 1.72.72 2.9.7 1.2-.02 1.96-1.09 2.69-2.16.85-1.24 1.2-2.44 1.22-2.5-.03-.01-2.33-.9-2.34-3.53ZM14.16 6.08c.61-.74 1.02-1.77.91-2.8-.88.04-1.94.59-2.57 1.33-.56.65-1.06 1.7-.93 2.7.98.08 1.98-.5 2.59-1.23Z" /></svg>
           <span>Download for Mac</span>
         </a>
-        <span class="button disabled small hide-small" aria-disabled="true">
+        <a class="button small hide-small" data-download-windows href="https://github.com/capi-git/aven/releases/latest">
           <svg class="windows" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.1 10.4 4v7.1H3V5.1Zm0 13.8 7.4 1.1v-7H3v5.9Zm8.3 1.2L21 21.5v-8.4h-9.7v7ZM11.3 3.9v7.2H21V2.5l-9.7 1.4Z" /></svg>
-          <span>Windows <em>soon</em></span>
-        </span>
+          <span>Windows</span>
+        </a>
         <button class="icon-btn" data-action="toggle-pane" title="Toggle side panel">
           <svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="2" /><path d="M10 3v10" /></svg>
         </button>
@@ -192,14 +196,12 @@
                   </svg>
                   <span>Download for Mac</span>
                 </a>
-                <span class="button disabled" aria-disabled="true">
-                  <svg class="windows" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M3 5.1 10.4 4v7.1H3V5.1Zm0 13.8 7.4 1.1v-7H3v5.9Zm8.3 1.2L21 21.5v-8.4h-9.7v7ZM11.3 3.9v7.2H21V2.5l-9.7 1.4Z" />
-                  </svg>
-                  <span>Windows <em>coming soon</em></span>
-                </span>
+                <a class="button" data-download-windows href="https://github.com/capi-git/aven/releases/latest">
+                  <svg class="windows" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.1 10.4 4v7.1H3V5.1Zm0 13.8 7.4 1.1v-7H3v5.9Zm8.3 1.2L21 21.5v-8.4h-9.7v7ZM11.3 3.9v7.2H21V2.5l-9.7 1.4Z" /></svg>
+                  <span>Download for Windows</span>
+                </a>
               </div>
-              <p class="meta" data-release-meta>Apple Silicon · macOS 13 or later · Free and open source</p>
+              <p class="meta" data-release-meta>Apple Silicon Macs on macOS 13+ · Windows 10 and 11 · Free and open source</p>
 
               <div class="features">
                 <button class="feature" data-open-session="landing" data-open-pane="browser">
@@ -445,8 +447,8 @@
             <p>Claude Code, Codex, Cursor, Grok Build, OpenCode, Pi, omp and fx. What's available depends on the tool you have installed and its version.</p>
           </details>
           <details>
-            <summary>Which Macs are supported?</summary>
-            <p>Apple Silicon Macs running macOS 13 or later. Intel Mac builds aren't provided yet.</p>
+            <summary>Which computers are supported?</summary>
+            <p>Apple Silicon Macs running macOS 13 or later, and 64-bit Windows 10 and 11. Intel Mac builds aren't provided yet.</p>
           </details>
           <details>
             <summary>Why does macOS block it the first time?</summary>
@@ -462,7 +464,7 @@
           </details>
           <details>
             <summary>Is there a Windows version?</summary>
-            <p>A Windows test build is on the <a href="https://github.com/capi-git/aven/releases">releases page</a>. A regular Windows release is coming.</p>
+            <p>Yes. Download the Windows installer above and run it. It isn't code-signed yet, so Windows may show <strong>Windows protected your PC</strong>; choose <strong>More info → Run anyway</strong>. Install new versions from this page for now. A few desktop-control features are Mac-only.</p>
           </details>
         </div>
       </section>
@@ -476,12 +478,12 @@
               <svg class="apple" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.62c-.02-2.23 1.82-3.3 1.9-3.35-1.04-1.52-2.65-1.72-3.22-1.75-1.37-.14-2.68.81-3.37.81-.7 0-1.77-.79-2.9-.77-1.49.02-2.87.87-3.64 2.2-1.55 2.69-.4 6.67 1.11 8.85.74 1.07 1.62 2.27 2.77 2.22 1.11-.04 1.53-.72 2.88-.72 1.34 0 1.72.72 2.9.7 1.2-.02 1.96-1.09 2.69-2.16.85-1.24 1.2-2.44 1.22-2.5-.03-.01-2.33-.9-2.34-3.53ZM14.16 6.08c.61-.74 1.02-1.77.91-2.8-.88.04-1.94.59-2.57 1.33-.56.65-1.06 1.7-.93 2.7.98.08 1.98-.5 2.59-1.23Z" /></svg>
               <span>Download for Mac</span>
             </a>
-            <span class="button disabled" aria-disabled="true">
-              <svg class="windows" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.1 10.4 4v7.1H3V5.1Zm0 13.8 7.4 1.1v-7H3v5.9Zm8.3 1.2L21 21.5v-8.4h-9.7v7ZM11.3 3.9v7.2H21V2.5l-9.7 1.4Z" /></svg>
-              <span>Windows <em>coming soon</em></span>
-            </span>
+            <a class="button" data-download-windows href="https://github.com/capi-git/aven/releases/latest">
+          <svg class="windows" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.1 10.4 4v7.1H3V5.1Zm0 13.8 7.4 1.1v-7H3v5.9Zm8.3 1.2L21 21.5v-8.4h-9.7v7ZM11.3 3.9v7.2H21V2.5l-9.7 1.4Z" /></svg>
+          <span>Download for Windows</span>
+        </a>
         </div>
-        <p class="meta" data-release-meta>Apple Silicon · macOS 13 or later · Free and open source</p>
+        <p class="meta" data-release-meta>Apple Silicon Macs on macOS 13+ · Windows 10 and 11 · Free and open source</p>
       </section>
     </main>
 
@@ -506,6 +508,6 @@
     </footer>
 
     <script src="/demo.js?v=17"></script>
-    <script src="/site.js?v=17"></script>
+    <script src="/site.js?v=18"></script>
   </body>
 </html>

@@ -192,6 +192,15 @@ body {
   box-shadow: 0 14px 48px rgba(255, 255, 255, 0.18);
 }
 
+.button[hidden] {
+  display: none;
+}
+
+.button:not(.primary):not(.disabled):hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
 .button.small.primary {
   box-shadow: 0 4px 18px rgba(255, 255, 255, 0.08);
 }
