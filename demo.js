@@ -9,6 +9,7 @@
   const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  const welcome = $("#welcome");
   const transcript = $("#transcript");
   const tabs = $("#center-tabs");
   const input = $("#composer-input");
@@ -18,6 +19,8 @@
     document.querySelector("[data-download]")?.href ?? "https://github.com/capi-git/aven/releases/latest";
 
   const sessions = {
+    // The description and downloads live in the page markup; this entry only gives it a tab.
+    welcome: { title: "Welcome to Aven", provider: null, items: [] },
     landing: {
       title: "Build landing page",
       provider: "claude",
@@ -104,8 +107,8 @@
     },
   };
 
-  let current = "landing";
-  let openTabs = ["landing", "tests"];
+  let current = "welcome";
+  let openTabs = ["welcome", "landing"];
   let busy = false;
   let newCount = 0;
 
@@ -139,8 +142,15 @@
     return el;
   }
 
+  function showWelcome(show) {
+    welcome.hidden = !show;
+    transcript.hidden = show;
+    $('[data-action="welcome"]').classList.toggle("active", show);
+  }
+
   function renderSession() {
     const session = sessions[current];
+    showWelcome(current === "welcome");
     transcript.replaceChildren(...session.items.map(renderItem));
     transcript.scrollTop = transcript.scrollHeight;
     composer.hidden = false;
@@ -154,7 +164,9 @@
       ...openTabs.map((id) => {
         const tab = document.createElement("button");
         tab.className = "center-tab" + (id === current ? " active" : "");
-        tab.innerHTML = `<span class="provider-dot" data-provider="${sessions[id].provider}"></span><span></span>`;
+        tab.innerHTML = sessions[id].provider
+          ? `<span class="provider-dot" data-provider="${sessions[id].provider}"></span><span></span>`
+          : `<svg class="aven-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" /></svg><span></span>`;
         tab.lastChild.textContent = sessions[id].title;
         tab.addEventListener("click", () => openSession(id));
         return tab;
@@ -229,7 +241,7 @@
         "<p>This is a preview on a website, so there's no real agent here and nothing I can change.</p>" +
         "<p>In Aven, your own Claude Code, Codex or Cursor would pick this up and work in your project, " +
         `with the browser, files and changes right beside the chat. <a href="${downloadHref()}" ` +
-        `style="color:#fff">Download for Mac</a> to try it for real.</p>`,
+        `style="color:var(--app-accent)">Download for Mac</a> to try it for real.</p>`,
     };
     for (const tool of plan.tools) {
       append(tool);
@@ -241,15 +253,21 @@
     sendButton.disabled = false;
   }
 
+  function submit() {
+    if (busy || !input.value.trim()) return;
+    if (current === "welcome") newSession();
+    send(input.value);
+  }
+
   composer.addEventListener("submit", (event) => {
     event.preventDefault();
-    send(input.value);
+    submit();
   });
 
   input.addEventListener("keydown", (event) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
-      send(input.value);
+      submit();
     }
   });
 
@@ -333,8 +351,7 @@
     row.addEventListener("click", () => row.parentElement.classList.toggle("open")),
   );
 
-  $('[data-action="new-session"]').addEventListener("click", () => {
-    if (busy) return;
+  function newSession() {
     newCount += 1;
     const id = `new-${newCount}`;
     sessions[id] = { title: "New session", provider: currentProvider, items: [{ type: "empty" }] };
@@ -347,8 +364,24 @@
     first.parentElement.classList.add("open");
     first.prepend(button);
     openSession(id);
+  }
+
+  $('[data-action="new-session"]').addEventListener("click", () => {
+    if (busy) return;
+    newSession();
     input.focus();
   });
+
+  $('[data-action="welcome"]').addEventListener("click", () => openSession("welcome"));
+
+  // Feature cards on the welcome view jump to the part of the preview they describe.
+  $$(".feature[data-open-session]").forEach((card) =>
+    card.addEventListener("click", () => {
+      app.classList.remove("no-pane");
+      openSession(card.dataset.openSession);
+      if (card.dataset.openPane) $(`.pane-tab[data-pane="${card.dataset.openPane}"]`).click();
+    }),
+  );
 
   const views = {
     notes: {
@@ -390,6 +423,7 @@
         $(".tag", item).textContent = tag;
         panel.append(item);
       }
+      showWelcome(false);
       transcript.replaceChildren(panel);
       composer.hidden = true;
     }),
@@ -403,10 +437,12 @@
   const menu = $("#model-menu");
   let currentProvider = "claude";
 
-  $('[data-action="toggle-models"]').addEventListener("click", (event) => {
-    event.stopPropagation();
-    menu.hidden = !menu.hidden;
-  });
+  $$('[data-action="toggle-models"]').forEach((button) =>
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      menu.hidden = !menu.hidden;
+    }),
+  );
 
   $$("#model-menu button").forEach((option) =>
     option.addEventListener("click", () => {

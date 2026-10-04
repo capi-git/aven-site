@@ -1,45 +1,35 @@
-/* Interactive recreation of the Aven window. Colors follow the app's
-   monochrome dark default (#0a0a0a background, #f5f5f5 accent). */
-
-.demo-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 56px 24px 0;
-}
-
-.demo-hint {
-  margin: 0 0 14px;
-  font-size: 13px;
-  color: rgba(245, 245, 245, 0.4);
-}
+/* Interactive recreation of the Aven window, filling the page. It follows the
+   app's default dark theme: black glass at 66% over a heavily blurred desktop,
+   with a #57b5ff accent. */
 
 .app {
-  --app-bg: #0a0a0a;
-  --app-side: #0e0e0f;
-  --app-raised: #161617;
+  --app-glass: rgb(var(--glass-rgb) / var(--glass-alpha));
+  --app-tint: rgba(255, 255, 255, 0.025);
+  --app-raised: rgba(255, 255, 255, 0.06);
   --app-line: rgba(255, 255, 255, 0.08);
   --app-text: #ededed;
-  --app-muted: rgba(237, 237, 237, 0.55);
-  --app-faint: rgba(237, 237, 237, 0.35);
+  --app-muted: rgba(237, 237, 237, 0.58);
+  --app-faint: rgba(237, 237, 237, 0.36);
+  --app-accent: var(--accent);
 
+  position: absolute;
+  inset: clamp(12px, 2.2vw, 28px);
   display: flex;
   flex-direction: column;
-  width: min(1240px, 100%);
-  height: min(720px, 82vh);
-  min-height: 520px;
   overflow: hidden;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: var(--app-bg);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 30px 100px rgba(0, 0, 0, 0.6);
+  background: var(--app-glass);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
   color: var(--app-text);
+  transition: background 0.4s ease;
   font-size: 12.5px;
   text-align: left;
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.7),
-    0 50px 140px rgba(0, 0, 0, 0.75),
-    0 0 180px rgba(255, 255, 255, 0.05);
-  animation: rise 1s 0.15s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
 .app button {
@@ -71,10 +61,23 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  height: 40px;
+  height: 44px;
   padding: 0 12px;
-  border-bottom: 1px solid var(--app-line);
+  padding-top: env(safe-area-inset-top);
   flex: none;
+}
+
+.title-link {
+  padding: 5px 9px;
+  border-radius: 6px;
+  color: var(--app-muted);
+  font-size: 12.5px;
+  text-decoration: none;
+}
+
+.title-link:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--app-text);
 }
 
 .lights {
@@ -161,9 +164,9 @@
   padding: 6px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(24, 24, 26, 0.96);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
+  background: rgba(20, 20, 22, 0.78);
+  -webkit-backdrop-filter: blur(30px) saturate(160%);
+  backdrop-filter: blur(30px) saturate(160%);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 }
 
@@ -198,10 +201,9 @@
   display: flex;
   flex-direction: column;
   gap: 1px;
-  width: 210px;
-  padding: 10px 8px;
-  border-right: 1px solid var(--app-line);
-  background: var(--app-side);
+  width: 218px;
+  padding: 6px 8px 10px;
+  background: var(--app-tint);
   overflow-y: auto;
   flex: none;
   transition:
@@ -210,7 +212,7 @@
 }
 
 .app.no-sidebar .sidebar {
-  margin-left: -210px;
+  margin-left: -218px;
   opacity: 0;
 }
 
@@ -311,6 +313,35 @@
   flex-direction: column;
   flex: 1;
   min-width: 0;
+  margin: 0 8px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+}
+
+.side-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-top: auto;
+  padding: 16px 8px 2px;
+  font-size: 11px;
+}
+
+.side-links a {
+  color: var(--app-faint);
+  text-decoration: none;
+}
+
+.side-links a:hover {
+  color: var(--app-text);
+}
+
+.app .aven-chevron {
+  width: 12px;
+  height: 12px;
+  stroke-width: 2;
 }
 
 .center-tabs {
@@ -322,27 +353,43 @@
   flex: none;
 }
 
-.center-tab {
+/* Tabs follow the app: no fill; the active tab is full-strength text and icon. */
+.app .center-tab {
   display: flex;
   align-items: center;
   gap: 7px;
+  min-width: 0;
   max-width: 200px;
   padding: 0 10px;
-  border-radius: 6px;
-  color: var(--app-muted);
+  color: rgba(237, 237, 237, 0.5);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  transition: color 0.22s ease;
 }
 
-.center-tab.active {
-  background: rgba(255, 255, 255, 0.07);
+.app .center-tab:hover {
+  color: rgba(237, 237, 237, 0.85);
+}
+
+.app .center-tab.active {
   color: var(--app-text);
+}
+
+.center-tab > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .center-tab .provider-dot {
   width: 10px;
   height: 10px;
+}
+
+.center-tab:not(.active) .provider-dot {
+  opacity: 0.6;
+}
+
+.transcript[hidden] {
+  display: none;
 }
 
 .transcript {
@@ -461,7 +508,7 @@
   height: 12px;
   border-radius: 50%;
   border: 1.5px solid rgba(255, 255, 255, 0.2);
-  border-top-color: #f5f5f5;
+  border-top-color: var(--app-accent);
   animation: spin 0.8s linear infinite;
 }
 
@@ -516,14 +563,18 @@
   width: calc(100% - 32px);
   max-width: 600px;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: var(--app-raised);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.055);
   flex: none;
   transition: border-color 0.15s ease;
 }
 
+.composer[hidden] {
+  display: none;
+}
+
 .composer:focus-within {
-  border-color: rgba(255, 255, 255, 0.28);
+  border-color: rgb(var(--accent-rgb) / 0.5);
 }
 
 .composer textarea {
@@ -570,8 +621,8 @@
   width: 26px;
   height: 26px;
   border-radius: 7px;
-  background: #f5f5f5;
-  color: #0a0a0a;
+  background: var(--app-accent);
+  color: #03121f;
 }
 
 .app .send svg {
@@ -587,9 +638,13 @@
 .pane {
   display: flex;
   flex-direction: column;
-  width: 44%;
+  width: 42%;
   min-width: 0;
-  border-left: 1px solid var(--app-line);
+  margin: 0 8px 8px 0;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  overflow: hidden;
   flex: none;
   transition:
     width 0.3s ease,
@@ -598,8 +653,9 @@
 
 .app.no-pane .pane {
   width: 0;
+  margin-right: 0;
   opacity: 0;
-  border-left: 0;
+  border-width: 0;
 }
 
 .pane-tabs {
@@ -622,12 +678,16 @@
   white-space: nowrap;
 }
 
+.app .pane-tab {
+  color: rgba(237, 237, 237, 0.5);
+  transition: color 0.22s ease;
+}
+
 .app .pane-tab:hover {
-  color: var(--app-text);
+  color: rgba(237, 237, 237, 0.85);
 }
 
 .app .pane-tab.active {
-  background: rgba(255, 255, 255, 0.07);
   color: var(--app-text);
 }
 
@@ -684,18 +744,25 @@
 
 .app .comment-btn:hover,
 .app .comment-btn.on {
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgb(var(--accent-rgb) / 0.6);
   color: var(--app-text);
 }
 
-/* The fake website shown in the in-app browser */
+/* The fake website shown in the in-app browser, dressed in Aven's look:
+   the blue light-arc wallpaper, glass cards and the #57b5ff accent. */
 .site {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   margin: 10px;
-  padding: 18px 20px;
+  padding: 18px 22px 20px;
   border-radius: 8px;
-  background: linear-gradient(180deg, #f7f9fc, #e8eef7);
-  color: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.1)),
+    url("/assets/aven-background-mono.jpg") left bottom / cover no-repeat,
+    #03070f;
+  color: #f5f5f5;
   font-size: 12px;
   overflow: hidden;
 }
@@ -704,12 +771,12 @@
   display: flex;
   gap: 16px;
   align-items: center;
-  color: #6b7280;
+  color: rgba(245, 245, 245, 0.55);
 }
 
 .site-nav strong {
   margin-right: auto;
-  color: #111827;
+  color: #f5f5f5;
   font-size: 13px;
 }
 
@@ -718,45 +785,55 @@
 }
 
 .site-kicker {
-  margin: 0 0 6px;
-  color: #6b7280;
-  font-size: 11px;
+  margin: 0 0 8px;
+  color: var(--app-accent);
+  font-size: 10.5px;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
 }
 
 .site-hero h2 {
   margin: 0 0 8px;
-  max-width: 12em;
-  font-size: 24px;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  max-width: 11em;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  background: linear-gradient(180deg, #ffffff 40%, rgba(255, 255, 255, 0.62));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .site-hero p {
   margin: 0 0 16px;
-  color: #4b5563;
+  color: rgba(245, 245, 245, 0.6);
 }
 
 .app .site-cta {
   display: inline-block;
   padding: 7px 14px;
-  border-radius: 8px;
-  background: #111827;
-  color: #fff;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.07);
+  color: #f5f5f5;
   font-weight: 500;
   transition: all 0.4s ease;
 }
 
 .app .site-cta.upgraded {
-  padding: 10px 20px;
-  background: #2563eb;
+  padding: 10px 22px;
+  border-color: var(--app-accent);
+  background: var(--app-accent);
+  color: #03121f;
   font-size: 13.5px;
-  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+  font-weight: 600;
+  box-shadow: 0 8px 28px rgb(var(--accent-rgb) / 0.45);
 }
 
 .app .site.picking .site-cta {
-  outline: 2px dashed #2563eb;
+  outline: 2px dashed var(--app-accent);
   outline-offset: 3px;
   cursor: pointer;
 }
@@ -767,20 +844,85 @@
   gap: 8px;
 }
 
-.site-cards div {
-  padding: 10px;
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+.site-cards div,
+.site-rain {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.05);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
 
 .site-cards b {
   display: block;
-  font-size: 17px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .site-cards span {
-  color: #6b7280;
+  color: rgba(245, 245, 245, 0.55);
+}
+
+/* Fills the rest of the page so the browser never looks empty. */
+.site-rain {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 120px;
+  margin-top: 8px;
+}
+
+.site-rain p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 12px;
+  color: rgba(245, 245, 245, 0.55);
+}
+
+.site-rain p b {
+  color: var(--app-accent);
+  font-weight: 500;
+}
+
+.site-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  flex: 1;
+  min-height: 60px;
+}
+
+.site-bars i {
+  flex: 1;
+  height: var(--h);
+  border-radius: 4px 4px 2px 2px;
+  background: linear-gradient(180deg, var(--app-accent), rgb(var(--accent-rgb) / 0.15));
+  box-shadow: 0 0 18px rgb(var(--accent-rgb) / 0.25);
+  transform-origin: bottom;
+  animation: bar-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.site-bars i:nth-child(2n) {
+  animation-delay: 0.05s;
+}
+
+.site-bars i:nth-child(3n) {
+  animation-delay: 0.1s;
+}
+
+@keyframes bar-in {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+.site-axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  color: rgba(245, 245, 245, 0.4);
+  font-size: 10.5px;
 }
 
 .comment-pop {
@@ -791,7 +933,9 @@
   padding: 10px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(24, 24, 26, 0.97);
+  background: rgba(20, 20, 22, 0.82);
+  -webkit-backdrop-filter: blur(30px);
+  backdrop-filter: blur(30px);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
   animation: msg-in 0.2s ease both;
 }
@@ -804,8 +948,8 @@
 .app .comment-pop button {
   padding: 4px 10px;
   border-radius: 6px;
-  background: #f5f5f5;
-  color: #0a0a0a;
+  background: var(--app-accent);
+  color: #03121f;
   font-weight: 500;
 }
 
@@ -918,8 +1062,8 @@
   margin: 0 14px 14px;
   padding: 6px 12px;
   border-radius: 7px;
-  background: #f5f5f5;
-  color: #0a0a0a;
+  background: var(--app-accent);
+  color: #03121f;
   font-weight: 500;
 }
 
@@ -929,7 +1073,7 @@
   cursor: default;
 }
 
-/* Smaller screens: drop the side pane, then the sidebar. */
+/* Smaller screens: drop the side pane, then the sidebar and extra title bar items. */
 @media (max-width: 960px) {
   .pane {
     display: none;
@@ -937,11 +1081,23 @@
 }
 
 @media (max-width: 640px) {
-  .sidebar {
+  .app {
+    inset: 0;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .sidebar,
+  .lights,
+  .hide-small,
+  [data-action="toggle-sidebar"],
+  [data-action="toggle-pane"] {
     display: none;
   }
 
-  .app {
-    height: 560px;
+  .center {
+    margin: 0;
+    border-width: 1px 0 0;
+    border-radius: 0;
   }
 }
